@@ -1,14 +1,38 @@
 import React from 'react';
+import { useState } from 'react';
 import Header from './components/Header';
+import Tasks from './components/Tasks';
 
 function App() {
-  const myName = 'Laura'
-  const hisName = 'Rhodhi'
-  const x = false
+  const title = 'Task Tracker'
+  const [taskList, setTaskList] = useState(
+    [
+        {
+            id: 1, 
+            text: 'Doctor Appointment',
+            day: 'Feb 5th, 2:30pm',
+            reminder: true
+        },
+        {
+            id: 2, 
+            text: 'Clean room',
+            day: 'Feb 12th, 9:00pm',
+            reminder: true
+        },
+        {
+            id:3, 
+            text: 'Sing in the Shower',
+            day: 'Jan 1st, 12:00am',
+            reminder: false
+        }
+    ]
+)
+  
 
   return (
     <div className="container">
-      <Header name= {myName} />
+      <Header title={title} />
+      <Tasks taskList={taskList} />
     </div>
   );
 }
