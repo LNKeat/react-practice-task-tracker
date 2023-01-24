@@ -1,3 +1,4 @@
+import React from 'react';
 import Header from './components/Header';
 
 function App() {
@@ -7,7 +8,7 @@ function App() {
 
   return (
     <div className="container">
-      <Header />
+      <Header name= {myName} />
     </div>
   );
 }
