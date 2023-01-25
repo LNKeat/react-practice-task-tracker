@@ -1,11 +1,12 @@
 import React from 'react';
+import Task from './/Task';
 
-const Tasks = ({ taskList }) => {
+const Tasks = ({ taskList, onDelete }) => {
  
   return (
     <div>
        {taskList.map((task) =>(
-       <h3 key={task.id}>{task.text}</h3>
+        <Task key={task.id} task={task} onDelete={onDelete} /> 
        ))}
     </div>
   )

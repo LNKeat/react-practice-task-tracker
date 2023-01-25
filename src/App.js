@@ -5,7 +5,6 @@ import Tasks from './components/Tasks';
 
 function App() {
   const title = 'Task Tracker'
-
   const [taskList, setTaskList] = useState(
     [
       {
@@ -28,12 +27,15 @@ function App() {
       }
   ]
   )
-  
+  //delete task
+const deleteTask = (id) => {
+ console.log('delete', id)
+}
  
   return (
     <div className="container">
       <Header title={title} />
-      <Tasks taskList={taskList} />
+      <Tasks taskList={taskList} onDelete={deleteTask} />
     </div>
   );
 }
