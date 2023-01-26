@@ -2,6 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
+import AddTask from './components/AddTask';
+
 
 function App() {
   const title = 'Task Tracker'
@@ -27,15 +29,30 @@ function App() {
       }
   ]
   )
-  //delete task
-const deleteTask = (id) => {
- console.log('delete', id)
-}
+  //Add Task
+    
+  //Delete Task
+  const deleteTask = (id) => {
+  console.log('delete', id)
+  setTaskList(taskList.filter((task) => task.id !== id))  
+  }
+
+  //Toggle Reminder
+  const toggleReminder = (id) => {
+    setTaskList(
+      taskList.map(
+        (task) => 
+        task.id === id ? {...task, reminder:!task.reminder } :task
+      )
+    )
+    console.log(taskList)
+  }
  
   return (
     <div className="container">
       <Header title={title} />
-      <Tasks taskList={taskList} onDelete={deleteTask} />
+      <AddTask />
+      {taskList.length > 0 ? <Tasks taskList={taskList} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No tasks to show'}
     </div>
   );
 }
