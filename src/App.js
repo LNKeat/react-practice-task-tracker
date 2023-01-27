@@ -8,7 +8,6 @@ import AddTask from './components/AddTask';
 function App() {
   const title = 'Task Tracker'
   const [taskList, setTaskList] = useState([])
-  // const [filteredTasks, setFilteredTasks] = useState([])
   const [showForm, setShowForm] = useState(false)
 
   useEffect(() => {
@@ -23,14 +22,26 @@ function App() {
 
   //Add Task
   const addTask = (newTask) => {
-    const id = taskList.length + 1
-    const task = {id, ...newTask}
-    const newTaskList = [...taskList, task]
-    setTaskList(newTaskList)
+    fetch('http://localhost:8000/tasks', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newTask)
+    })
+    .then(res => res.json())
+    .then(newTaskData => {
+      const updatedTaskList= [...taskList, newTaskData] 
+      setTaskList(updatedTaskList)
+      // history.push(`/members/`)
+    })
   }
     
   //Delete Task
   const deleteTask = (id) => {
+    fetch(`http://localhost:8000/tasks/${id}`, {
+      method: 'DELETE',
+    })
   setTaskList(taskList.filter((task) => task.id !== id))  
   }
 
