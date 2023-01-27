@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
@@ -7,29 +7,19 @@ import AddTask from './components/AddTask';
 
 function App() {
   const title = 'Task Tracker'
-  const [taskList, setTaskList] = useState(
-    [
-      {
-          "id": 1, 
-          "text": "Doctor Appointment",
-          "day": "Feb 5th, 2:30pm",
-          "reminder": true
-      }, 
-      {
-          "id": 2, 
-          "text": "Clean room",
-          "day": "Feb 12th, 9:00pm",
-          "reminder": true
-      },
-      {
-          "id":3, 
-          "text": "Sing in the Shower",
-          "day": "Jan 1st, 12:00am",
-          "reminder": false
-      }
-  ]
-  )
+  const [taskList, setTaskList] = useState([])
+  // const [filteredTasks, setFilteredTasks] = useState([])
   const [showForm, setShowForm] = useState(false)
+
+  useEffect(() => {
+
+    fetch('http://localhost:8000/tasks')
+    .then(res => res.json())
+    .then(data => {
+      setTaskList(data)
+    })
+   }, [])
+   
 
   //Add Task
   const addTask = (newTask) => {
@@ -41,7 +31,6 @@ function App() {
     
   //Delete Task
   const deleteTask = (id) => {
-  console.log('delete', id)
   setTaskList(taskList.filter((task) => task.id !== id))  
   }
 
