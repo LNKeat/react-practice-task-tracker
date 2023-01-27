@@ -35,7 +35,6 @@ function App() {
   const addTask = (newTask) => {
     const id = taskList.length + 1
     const task = {id, ...newTask}
-    console.log(task)
     const newTaskList = [...taskList, task]
     setTaskList(newTaskList)
   }
@@ -62,8 +61,8 @@ function App() {
  
   return (
     <div className="container">
-      <Header title={title} onClick={toggleForm} />
-      {showForm && <AddTask  onAdd={addTask} />}
+      <Header title={title} onToggle={toggleForm} showForm={showForm} />
+      {showForm && <AddTask  onAdd={addTask} setShowForm={setShowForm} />}
       {taskList.length > 0 ? <Tasks taskList={taskList} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No tasks to show'}
     </div>
   );
