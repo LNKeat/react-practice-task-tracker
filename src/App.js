@@ -29,7 +29,16 @@ function App() {
       }
   ]
   )
+  const [showForm, setShowForm] = useState(false)
+
   //Add Task
+  const addTask = (newTask) => {
+    const id = taskList.length + 1
+    const task = {id, ...newTask}
+    console.log(task)
+    const newTaskList = [...taskList, task]
+    setTaskList(newTaskList)
+  }
     
   //Delete Task
   const deleteTask = (id) => {
@@ -45,13 +54,16 @@ function App() {
         task.id === id ? {...task, reminder:!task.reminder } :task
       )
     )
-    console.log(taskList)
   }
+  //Show/Hide Form
+    const toggleForm = () => {
+      setShowForm(!showForm)
+    }
  
   return (
     <div className="container">
-      <Header title={title} />
-      <AddTask />
+      <Header title={title} onClick={toggleForm} />
+      {showForm && <AddTask  onAdd={addTask} />}
       {taskList.length > 0 ? <Tasks taskList={taskList} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No tasks to show'}
     </div>
   );

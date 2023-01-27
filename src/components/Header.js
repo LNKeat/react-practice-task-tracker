@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from "./Button";
 
-const Header = ({title}) => {
+const Header = ({title, onClick}) => {
 const click = () => {
     console.log("I was clicked")
 }
