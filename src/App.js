@@ -28,16 +28,16 @@ function App() {
   //Fetch All Tasks
   const fetchTasks = async () => {
     const res = await fetch('http://localhost:8000/tasks')
-    const data = await res.json()
-    return data
+    const tasksData = await res.json()
+    return tasksData
   }
 
-  //Fetch Single Task
-  // const fetchTask = async (id) => {
-  //   const res = await fetch(`http://localhost:8000/tasks/${id}`)
-  //   const data = await res.json()
-  //   return data
-  // }
+  // Fetch Single Task
+  const fetchTask = async (id) => {
+    const res = await fetch(`http://localhost:8000/tasks/${id}`)
+    const taskData = await res.json()
+    return taskData
+  }
    
 
   //Add Task with .then chain
@@ -84,15 +84,64 @@ function App() {
 
   }
 
-  //Toggle Reminder
-  const onToggle = (id) => { 
+  //Toggle Reminder with persistence
+  // Toggle Reminder
+  const onToggle = async (id) => {
+    const taskToToggle = await fetchTask(id)
+    const updTask = { ...taskToToggle, reminder: !taskToToggle.reminder }
+
+    const res = await fetch(`http://localhost:8000/tasks/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(updTask),
+    })
+
+    const data = await res.json()
+
+    res.status === 200 ? 
     setTaskList(
-      taskList.map(
-        (task) => 
-        task.id === id ? {...task, reminder:!task.reminder } :task
+      taskList.map((task) =>
+        task.id === id ? { ...task, reminder: data.reminder } : task
       )
     )
+    : alert(`Not Working. Error: ${res.status}`)
+    
   }
+
+    // const onToggle = async (id) => {
+    //   const taskToToggle = await fetchTask(id)
+    //   const updatedTask = {...taskToToggle, reminder:!taskToToggle.reminder }
+
+    //   const res = await fetch( `http://localhost:8000/tasks/${id}`, {
+    //     method: 'PUT',
+    //     headers: {
+    //       'Content-type': 'application/json',
+    //     },
+    //     body: JSON.stringify(updatedTask)
+    //   })
+    //   const taskData = await res.json()
+    //   console.log(taskData)
+
+    //   setTaskList(
+    //     taskList.map(
+    //       (task) => 
+    //       task.id === id ? { } : task
+    //     )
+    //   )
+
+    // }
+
+  //Toggle Reminder without persistence
+  // const onToggle = (id) => { 
+  //   setTaskList(
+  //     taskList.map(
+  //       (task) => 
+  //       task.id === id ? {...task, reminder:!task.reminder } :task
+  //     )
+  //   )
+  // }
 
 
   //Show/Hide Form
