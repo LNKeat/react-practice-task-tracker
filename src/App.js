@@ -17,7 +17,6 @@ function App() {
   //   }  )
   // }, [])
   
-
   useEffect(() => {
     (async () => {
       const tasksFromServer = await fetchTasks()
@@ -41,28 +40,43 @@ function App() {
   // }
    
 
-  //Add Task
-  const addTask = (newTask) => {
-    fetch('http://localhost:8000/tasks', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(newTask)
-    })
-    .then(res => res.json())
-    .then(newTaskData => {
-      const updatedTaskList= [...taskList, newTaskData] 
-      setTaskList(updatedTaskList)
-    })
-  }
+  //Add Task with .then chain
+  // const addTask = (newTask) => {
+  //   fetch('http://localhost:8000/tasks', {
+  //     method: 'POST',
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify(newTask)
+  //   })
+  //   .then(res => res.json())
+  //   .then(newTaskData => {
+  //     const updatedTaskList= [...taskList, newTaskData] 
+  //     setTaskList(updatedTaskList)
+  //   })
+  // }
+
+  //Add Task with async/await
+    const addTask = async(task) => {
+      const res = await fetch('http://localhost:8000/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-type' : 'application/json',
+        },
+        body: JSON.stringify(task)
+      })
+      const taskData = await res.json()
+      setTaskList([...taskList, taskData])
+    }
     
   //Delete Task
   const deleteTask = (id) => {
     fetch(`http://localhost:8000/tasks/${id}`, {
       method: 'DELETE',
     })
-  setTaskList(taskList.filter((task) => task.id !== id))  
+    // .then (res => console.log(res))
+    setTaskList(taskList.filter((task) => task.id !== id))
+
   }
 
   //Toggle Reminder
