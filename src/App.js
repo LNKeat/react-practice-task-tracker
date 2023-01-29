@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
 import AddTask from './components/AddTask';
@@ -10,14 +9,36 @@ function App() {
   const [taskList, setTaskList] = useState([])
   const [showForm, setShowForm] = useState(false)
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   fetch('http://localhost:8000/tasks')
+  //   .then(res => res.json())
+  //   .then(taskData => {
+  //     setTaskList(taskData)
+  //   }  )
+  // }, [])
+  
 
-    fetch('http://localhost:8000/tasks')
-    .then(res => res.json())
-    .then(data => {
-      setTaskList(data)
-    })
-   }, [])
+  useEffect(() => {
+    (async () => {
+      const tasksFromServer = await fetchTasks()
+      setTaskList(tasksFromServer)
+    })()
+  }, [])
+  
+
+  //Fetch All Tasks
+  const fetchTasks = async () => {
+    const res = await fetch('http://localhost:8000/tasks')
+    const data = await res.json()
+    return data
+  }
+
+  //Fetch Single Task
+  // const fetchTask = async (id) => {
+  //   const res = await fetch(`http://localhost:8000/tasks/${id}`)
+  //   const data = await res.json()
+  //   return data
+  // }
    
 
   //Add Task
@@ -33,7 +54,6 @@ function App() {
     .then(newTaskData => {
       const updatedTaskList= [...taskList, newTaskData] 
       setTaskList(updatedTaskList)
-      // history.push(`/members/`)
     })
   }
     
@@ -46,7 +66,7 @@ function App() {
   }
 
   //Toggle Reminder
-  const toggleReminder = (id) => {
+  const toggleReminder = (id) => { 
     setTaskList(
       taskList.map(
         (task) => 
@@ -54,6 +74,19 @@ function App() {
       )
     )
   }
+ //Toggle Reminder with persistance
+//  function updateTask(id){
+//   fetch(`http://localhost:8000/tasks/${id}`, {
+//      method: 'PUT',
+//      headers: {
+//        "Content-Type": "application/json"
+//      },
+//      body: JSON.stringify(id)
+//    })
+ 
+//  }
+
+
   //Show/Hide Form
     const toggleForm = () => {
       setShowForm(!showForm)
@@ -63,7 +96,7 @@ function App() {
     <div className="container">
       <Header title={title} onToggle={toggleForm} showForm={showForm} />
       {showForm && <AddTask  onAdd={addTask} setShowForm={setShowForm} />}
-      {taskList.length > 0 ? <Tasks taskList={taskList} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No tasks to show'}
+      {taskList.length > 0 ? <Tasks taskList={taskList} onDelete={deleteTask} toggleReminder={toggleReminder} /> : 'No tasks to show'}
     </div>
   );
 }
