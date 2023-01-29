@@ -70,12 +70,17 @@ function App() {
     }
     
   //Delete Task
-  const deleteTask = (id) => {
-    fetch(`http://localhost:8000/tasks/${id}`, {
-      method: 'DELETE',
-    })
-    // .then (res => console.log(res))
-    setTaskList(taskList.filter((task) => task.id !== id))
+  const deleteTask = async (id) => {
+    const res = await fetch(`http://localhost:8000/tasks/${id}`, {
+        method: 'DELETE',
+      })
+      res.status === 200 ? setTaskList(taskList.filter((task) => task.id !== id)) : alert(`Not Working. Error: ${res.status}`)
+    
+    // fetch(`http://localhost:8000/tasks/${id}`, {
+    //   method: 'DELETE',
+    // })
+    // .then (res => console.log(res.status))
+    // setTaskList(taskList.filter((task) => task.id !== id))
 
   }
 
