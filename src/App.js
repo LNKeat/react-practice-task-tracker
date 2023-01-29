@@ -66,7 +66,7 @@ function App() {
   }
 
   //Toggle Reminder
-  const toggleReminder = (id) => { 
+  const onToggle = (id) => { 
     setTaskList(
       taskList.map(
         (task) => 
@@ -74,17 +74,6 @@ function App() {
       )
     )
   }
- //Toggle Reminder with persistance
-//  function updateTask(id){
-//   fetch(`http://localhost:8000/tasks/${id}`, {
-//      method: 'PUT',
-//      headers: {
-//        "Content-Type": "application/json"
-//      },
-//      body: JSON.stringify(id)
-//    })
- 
-//  }
 
 
   //Show/Hide Form
@@ -96,7 +85,7 @@ function App() {
     <div className="container">
       <Header title={title} onToggle={toggleForm} showForm={showForm} />
       {showForm && <AddTask  onAdd={addTask} setShowForm={setShowForm} />}
-      {taskList.length > 0 ? <Tasks taskList={taskList} onDelete={deleteTask} toggleReminder={toggleReminder} /> : 'No tasks to show'}
+      {taskList.length > 0 ? <Tasks taskList={taskList} onDelete={deleteTask} onToggle={onToggle} /> : 'No tasks to show'}
     </div>
   );
 }
